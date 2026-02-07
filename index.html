@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sistema Simples de Estoque</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div>
+        <h1>Sistema Simples de Estoque</h1>
+        <p>
+          Cadastre produtos, controle entradas/saídas e sincronize com sua
+          planilha do Google Sheets.
+        </p>
+      </div>
+      <button id="refresh-btn" class="secondary">Atualizar</button>
+    </header>
+
+    <main class="app-grid">
+      <section class="card">
+        <h2>Novo produto</h2>
+        <form id="product-form">
+          <label>
+            Nome do produto
+            <input name="name" required />
+          </label>
+          <label>
+            Fornecedor
+            <input name="supplier" required />
+          </label>
+          <label>
+            Estoque inicial
+            <input name="stock" type="number" min="0" value="0" required />
+          </label>
+          <label>
+            Data de cadastro
+            <input name="createdAt" type="date" required />
+          </label>
+          <button type="submit">Cadastrar produto</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Movimentação</h2>
+        <form id="movement-form">
+          <label>
+            Produto
+            <select name="productId" required></select>
+          </label>
+          <label>
+            Tipo
+            <select name="type" required>
+              <option value="entrada">Entrada</option>
+              <option value="saida">Saída</option>
+            </select>
+          </label>
+          <label>
+            Quantidade
+            <input name="quantity" type="number" min="1" required />
+          </label>
+          <label>
+            Data da movimentação
+            <input name="date" type="date" required />
+          </label>
+          <button type="submit">Registrar movimentação</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Filtros</h2>
+        <label>
+          Buscar por nome
+          <input id="filter-name" placeholder="Digite o nome do produto" />
+        </label>
+        <label>
+          Fornecedor
+          <input id="filter-supplier" placeholder="Fornecedor" />
+        </label>
+        <div class="summary">
+          <div>
+            <span>Total em estoque</span>
+            <strong id="total-stock">0</strong>
+          </div>
+          <div>
+            <span>Fornecedor com mais entradas no mês</span>
+            <strong id="top-supplier">-</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="card full">
+        <h2>Produtos cadastrados</h2>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Produto</th>
+                <th>Fornecedor</th>
+                <th>Estoque</th>
+                <th>Cadastro</th>
+                <th>Última entrada</th>
+                <th>Última saída</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="product-table"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card full">
+        <h2>Resumo de movimentações</h2>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Produto</th>
+                <th>Entradas (dia)</th>
+                <th>Saídas (dia)</th>
+                <th>Entradas (semana)</th>
+                <th>Saídas (semana)</th>
+                <th>Entradas (mês)</th>
+                <th>Saídas (mês)</th>
+              </tr>
+            </thead>
+            <tbody id="summary-table"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <dialog id="edit-modal">
+      <form method="dialog" id="edit-form" class="modal">
+        <h2>Editar produto</h2>
+        <input type="hidden" name="id" />
+        <label>
+          Nome
+          <input name="name" required />
+        </label>
+        <label>
+          Fornecedor
+          <input name="supplier" required />
+        </label>
+        <label>
+          Estoque atual
+          <input name="stock" type="number" min="0" required />
+        </label>
+        <div class="modal-actions">
+          <button type="button" id="cancel-edit" class="secondary">
+            Cancelar
+          </button>
+          <button type="submit">Salvar</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="app.js"></script>
+  </body>
+</html>
